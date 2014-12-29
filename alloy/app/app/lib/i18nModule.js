@@ -8,82 +8,75 @@
 
 var i18nModule = function(_controller) {
 	
-	var _deviceLocale = Titanium.Platform.locale,
-		_localeArray = _deviceLocale.split('-'),
-		_checkingDefaultLocale = false,
-		_controller = _controller,
-		_stringsObject,
-		_locale;
+	var deviceLocale = Titanium.Platform.locale,
+	localeArray = deviceLocale.split('-'),
+	checkingDefaultLocale = false,
+	controller = _controller,
+	stringsCollection,
+	loadedLocale,
+	error;
+	
 
-	function loadLocalefile(locale) {
-				
-		_locale = locale;
+	function loadLocalefile(_locale) {
 		
 		Titanium.API.log("LOCALE: Checking locale: '" + _locale + "'");
 		
-		var _filePath = 'i18n/' + _locale + '.json';
-		var _file = Titanium.Filesystem.getFile( Titanium.Filesystem.resourcesDirectory, _filePath );
-
-		if(!_file.exists()){
-						
-			if(_checkingDefaultLocale) {
-				Titanium.API.error("LOCALE: Default i18n file not present.");
-				return;
-			}
+		var filePath = 'i18n/' + _locale + '.json';
+		var file = Titanium.Filesystem.getFile( Titanium.Filesystem.resourcesDirectory, filePath );
+		
+		if(!file.exists()){
 			
-			if(_localeArray.length > 1) {
-				// Check global locale
-				_localeArray.pop();
-				loadLocalefile( _localeArray[0] );
+			if(!checkingDefaultLocale) {
+				if(localeArray.length > 1) {
+					localeArray.pop();
+					loadLocalefile( localeArray[0] );
+				} else {
+					checkingDefaultLocale = true;
+					loadLocalefile( Alloy.CFG.defaultLocale );
+				}
 			} else {
-				// Check default locale
-				_checkingDefaultLocale = true;
-				Titanium.API.log("LOCALE: Loading default locale.-> '" + Alloy.CFG.defaultLocale + "'");
-				loadLocalefile( Alloy.CFG.defaultLocale );
+				error = new Error("LOCALE: Default '" + loadedLocale + "' file not present.");
+				alert(error);
+				return;
 			}
 			
 		} else {
 			
-			// Load locale strings to object
-			try {
-				Titanium.API.log("LOCALE: Checking strings for controller: '" + _controller + "'");
-				_stringsObject = JSON.parse(_file.read()).strings[_controller];
-				if(!_stringsObject) {
-					_stringsObject = "Controller '" + _controller + "' not defined.";
-					throw _stringsObject;
-				} else {
-					Titanium.API.log(_stringsObject);
-				}
-			} catch(e) {
-				Titanium.API.error(e);
+			stringsCollection = JSON.parse(file.read()).strings[controller];
+			if(!stringsCollection){
+				error = new Error("LOCALE: Controller '" + controller + "' not defined.");
+				alert(error.message);
+				return;
 			}
+			
+			loadedLocale = _locale;
 			
 		}
 		
 	}
 	
-	loadLocalefile( _deviceLocale );
+	loadLocalefile( deviceLocale );
 
 	return { 
 		getString: function(_key){
 			
-			var _returnString = _key;
+			var returnString = _key;
 			
 			try {
-				if(typeof(_localeArray) === 'string'){
-					_returnString = 'no_key';
+				if(typeof(stringsCollection) === 'string') {
+					returnString = 'no_key';
 				} else {
-					_returnString = _stringsObject[_key];
-					if(!_returnString) {
+					returnString = stringsCollection[_key];
+					if(!returnString) {
 						throw "LOCALE: Key '" + _key + "' doesn't exist.";
 					}
 				}
 			} catch(e) {
-				_returnString = _locale + '_' + _controller + '_' + _key;
+				returnString = loadedLocale + '_' + controller + '_' + _key;
 				Titanium.API.error(e);
 			}
 			
-			return _returnString;
+			return returnString;
 		} 
 	};
 
