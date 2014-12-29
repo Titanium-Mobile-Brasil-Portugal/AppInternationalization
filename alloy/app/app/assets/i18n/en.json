@@ -1,0 +1,11 @@
+{
+	"strings": {
+		"language": {
+			"code": "en",
+			"name": "English"
+		},
+		"index": {
+			"label_title": "Hello, World"
+		}
+	}
+}

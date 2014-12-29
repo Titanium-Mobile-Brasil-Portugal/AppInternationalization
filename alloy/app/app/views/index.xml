@@ -1,0 +1,6 @@
+<Alloy>
+	<Window class="container" layout="vertical">
+		<Label id="label" onClick="doClick" top="50"/>
+		<Button id="button" onClick="openNewWindow" top="20" />
+	</Window>
+</Alloy>
