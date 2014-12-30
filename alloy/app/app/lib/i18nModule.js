@@ -43,11 +43,12 @@ var i18nModule = function(_controller) {
 		} else {
 			
 			stringsCollection = JSON.parse(file.read()).strings[controller];
-			if(!stringsCollection) {
+			
+			if(_.isNaN(stringsCollection)) {
 				throw "controller '" + controller + "' not defined :: i18nModule";
 			}
 			
-			if(typeof(stringsCollection) === 'string') {
+			if(_.isString(stringsCollection)) {
 				alert("i18n file for '" + loadedLocale + "' is empty.");
 			}
 			
@@ -64,13 +65,14 @@ var i18nModule = function(_controller) {
 			
 			var returnString = _key;
 			
-			if(typeof(stringsCollection) === 'string') {
+			if(_.isString(stringsCollection)) {
 				returnString = 'i18n_empty';
 			} else {
-				returnString = stringsCollection[_key];
-				if(!returnString) {
+				if(_.has(stringsCollection, _key)){
+					returnString = stringsCollection[_key];
+				} else {
 					Titanium.API.error("LOCALE: Key '" + _key + "' doesn't exist.");
-					returnString = loadedLocale + '_' + controller + '_' + _key;
+					returnString = loadedLocale + '_' + controller + '_' + _key;					
 				}
 			}
 			

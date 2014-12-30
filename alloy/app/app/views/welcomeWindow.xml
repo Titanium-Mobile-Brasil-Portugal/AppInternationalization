@@ -1,6 +1,6 @@
 <Alloy>
 	<Window id="win" layout="vertical">
-		<Label id="windowTitle" top="50" />
+		<Label id="window_title" top="50" />
 		<Button id="close_button" top="20" onClick="closeWindow" />
 	</Window>
 </Alloy>

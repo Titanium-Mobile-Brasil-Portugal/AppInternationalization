@@ -5,7 +5,7 @@
 			"name": "English"
 		},
 		"index": {
-			"label_title": "Hello, World",
+			"window_title": "Index Window",
 			"button_label": "Open Welcome"
 		},
 		"welcomeWindow": {
