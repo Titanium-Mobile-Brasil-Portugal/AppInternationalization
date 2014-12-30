@@ -8,18 +8,19 @@
 
 var i18nModule = function(_controller) {
 	
-	var deviceLocale = Titanium.Platform.locale,
-	localeArray = deviceLocale.split('-'),
-	checkingDefaultLocale = false,
-	controller = _controller,
-	stringsCollection,
-	loadedLocale,
-	error;
+	var deviceLocale 			= Titanium.Platform.locale,
+		localeArray 			= deviceLocale.split('-'),
+		checkingDefaultLocale 	= false,
+		controller 				= _controller;
+		
+	var	stringsCollection,
+		loadedLocale,
+		error;
 	
 
 	function loadLocalefile(_locale) {
 		
-		Titanium.API.log("LOCALE: Checking locale: '" + _locale + "'");
+		//Titanium.API.log("LOCALE: Checking locale: '" + _locale + "'");
 		
 		var filePath = 'i18n/' + _locale + '.json';
 		var file = Titanium.Filesystem.getFile( Titanium.Filesystem.resourcesDirectory, filePath );
@@ -35,18 +36,19 @@ var i18nModule = function(_controller) {
 					loadLocalefile( Alloy.CFG.defaultLocale );
 				}
 			} else {
-				error = new Error("LOCALE: Default '" + loadedLocale + "' file not present.");
-				alert(error);
+				throw "default '" + loadedLocale + "' file not present :: i18nModule";
 				return;
 			}
 			
 		} else {
 			
 			stringsCollection = JSON.parse(file.read()).strings[controller];
-			if(!stringsCollection){
-				error = new Error("LOCALE: Controller '" + controller + "' not defined.");
-				alert(error.message);
-				return;
+			if(!stringsCollection) {
+				throw "controller '" + controller + "' not defined :: i18nModule";
+			}
+			
+			if(typeof(stringsCollection) === 'string') {
+				alert("i18n file for '" + loadedLocale + "' is empty.");
 			}
 			
 			loadedLocale = _locale;
@@ -62,18 +64,14 @@ var i18nModule = function(_controller) {
 			
 			var returnString = _key;
 			
-			try {
-				if(typeof(stringsCollection) === 'string') {
-					returnString = 'no_key';
-				} else {
-					returnString = stringsCollection[_key];
-					if(!returnString) {
-						throw "LOCALE: Key '" + _key + "' doesn't exist.";
-					}
+			if(typeof(stringsCollection) === 'string') {
+				returnString = 'i18n_empty';
+			} else {
+				returnString = stringsCollection[_key];
+				if(!returnString) {
+					Titanium.API.error("LOCALE: Key '" + _key + "' doesn't exist.");
+					returnString = loadedLocale + '_' + controller + '_' + _key;
 				}
-			} catch(e) {
-				returnString = loadedLocale + '_' + controller + '_' + _key;
-				Titanium.API.error(e);
 			}
 			
 			return returnString;

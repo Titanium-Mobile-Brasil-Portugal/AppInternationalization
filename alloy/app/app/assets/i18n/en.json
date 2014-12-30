@@ -5,7 +5,12 @@
 			"name": "English"
 		},
 		"index": {
-			"label_title": "Hello, World"
+			"label_title": "Hello, World",
+			"button_label": "Open Welcome"
+		},
+		"welcomeWindow": {
+			"window_title": "Welcome Window",
+			"close_button_label": "Close"
 		}
 	}
 }

@@ -1,0 +1,11 @@
+
+"#win": {
+	backgroundColor: '#CCCCCC'
+}
+
+"Label": {
+	color: '#000',
+	font: {
+		fontSize: 24
+	}
+}
