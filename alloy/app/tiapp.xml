@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>pt.michel.demo</id>
     <name>DemoI18n</name>
     <version>1.0</version>
     <publisher>monday_imac</publisher>
     <url>http://</url>
-    <description/>
+    <description>undefined</description>
     <copyright>2014 by monday_imac</copyright>
     <icon>appicon.png</icon>
     <fullscreen>false</fullscreen>
@@ -55,6 +56,7 @@
         <target device="mobileweb">true</target>
     </deployment-targets>
     <sdk-version>3.4.1.GA</sdk-version>
-<plugins><plugin version="1.0">ti.alloy</plugin>
-</plugins>
+    <plugins>
+        <plugin version="1.0">ti.alloy</plugin>
+    </plugins>
 </ti:app>
