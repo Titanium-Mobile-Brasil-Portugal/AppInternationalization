@@ -1,16 +1,14 @@
 
-// Import i18n module
-var L = require('i18nModule').i18n($.__controllerPath).getString;
+// TODO: A widget instead of a module
 
-$.label.text = L('label_title');
-$.button.title = L('button_label');
+var L = Alloy.Globals.i18n.controller($).getStrings;
 
-function doClick(e) {
-	alert($.label.text);
-}
+$.window_title.text = L('window_title');
+$.open_button.title = L('button_label');
 
 function openNewWindow() {
-	alert('Open window');
+	var welcomeWindow = Alloy.createController('welcomeWindow');
+	welcomeWindow.getView().open();
 }
 
 $.index.open();

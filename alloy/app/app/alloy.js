@@ -9,3 +9,9 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
+
+/*
+ * The app will try to load the device language
+ * If it fails, it will load the developer's selected language
+ */
+Alloy.Globals.i18n = Alloy.createWidget('com.xdpeople.i18nWidget').default('pt');
